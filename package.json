@@ -1,0 +1,18 @@
+{
+  "name": "yolo-chat-app",
+  "version": "1.0.0",
+  "description": "A Chat app for GenZ people to connect.",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon backend/server.js"
+  },
+  "author": "Rohan Somai",
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1"
+  }
+}
