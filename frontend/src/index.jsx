@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChakraProvider } from '@chakra-ui/react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import HomePage from './Pages/HomePage';
-import ChatPage from './Pages/ChatPage';
+import HomePage from './pages/HomePage';
+import ChatPage from './pages/ChatPage';
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
