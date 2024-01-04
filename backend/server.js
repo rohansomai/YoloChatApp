@@ -1,24 +1,18 @@
 const express = require('express');
-const { chats } = require('./data/data');
 const dotenv = require('dotenv');
 const { connectToDB } = require('./config/db');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
-dotenv.config();
-connectToDB();
+app.use(express.json()); // Accepting request in JSON format
+dotenv.config(); // To mount the env file
+connectToDB(); // connection to db
 
 app.get('/', (request, response) => {
   response.send('Yolo Chat App backend is running successfully!');
 });
 
-app.get('/api/chat', (request, response) => {
-  response.send(chats);
-});
-
-app.get('/api/chat/:id', (request, response) => {
-  console.log(request.params.id);
-  response.send(chats.find((c) => c._id === request.params.id));
-});
+app.use('/api/user', userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Yolo Chat App backend is running successfully on ${PORT}`));
