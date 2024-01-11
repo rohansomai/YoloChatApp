@@ -6,10 +6,8 @@ publicApi.interceptors.response.use(
     return response.data;
   },
   async (error) => {
-    if (error.message && error.message !== 'canceled') {
-      console.error(error);
-    }
-    return Promise.reject(error);
+    console.error(error);
+    return Promise.reject(error.response.data);
   }
 );
 

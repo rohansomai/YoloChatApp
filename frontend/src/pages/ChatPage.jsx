@@ -21,6 +21,7 @@ const ChatPage = () => {
 
   return (
     <div>
+      Chats:
       {chats.map(({ chatName }, index) => (
         <div key={index}>{chatName}</div>
       ))}

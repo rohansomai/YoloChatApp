@@ -48,7 +48,6 @@ const loginUser = expressAsyncHandler(async (request, response) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      password: user.password,
       pic: user.pic,
       token: generateJwtToken({ _id: user._id, name: user.name, email: user.email }),
     });

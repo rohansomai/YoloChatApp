@@ -1,9 +1,9 @@
 import { request } from '../shared/axios.interceptor';
+import { API_BASE_URL } from '../shared/config';
 
-const CHAT_ENDPOINT = '/api/chat';
 export function fetchAllChats() {
   return request({
-    url: CHAT_ENDPOINT,
+    url: `${API_BASE_URL}/chat`,
     method: 'GET',
   });
 }

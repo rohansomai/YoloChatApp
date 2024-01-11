@@ -9,10 +9,13 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { fieldNameToSentence, validateEmail, validateEmptyString } from '../../utils/string.util';
+import { fieldNameToSentence } from '../../utils/string.util';
+import { login } from '../../services/auth.service';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -24,6 +27,9 @@ const Login = () => {
     password: '',
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible((prev) => !prev);
@@ -54,12 +60,33 @@ const Login = () => {
     }
   };
 
+  const loginApi = (body) => {
+    setLoading(true);
+    login(body)
+      .then((response) => {
+        setLoading(false);
+        console.log('response: ', response);
+        navigate('/chats');
+      })
+      .catch((error) => {
+        console.error('Error: ', error);
+        toast({
+          title: 'Something went wrong!',
+          description: error.message || error,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        setLoading(false);
+      });
+  };
+
   const handleLogin = () => {
     console.log(input);
     if (validate()) {
-      console.log('SUCCESS');
+      loginApi({ email: input.email, password: input.password });
     } else {
-      console.log('errors: ', errors);
+      console.error('errors: ', errors);
     }
   };
 
@@ -107,7 +134,7 @@ const Login = () => {
               ))}
             </Box>
           )}
-          <Button marginTop={3} colorScheme={'blue'} width={'100%'} onClick={handleLogin}>
+          <Button marginTop={3} colorScheme={'blue'} width={'100%'} onClick={handleLogin} isLoading={loading}>
             Login
           </Button>
           <Button marginTop={1} colorScheme={'red'} width={'100%'}>

@@ -3,11 +3,13 @@ const dotenv = require('dotenv');
 const { connectToDB } = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const { notFound, errorHandler, errorLogger } = require('./middlewares/error.middleware');
+const cors = require('cors');
 
 dotenv.config(); // To mount the env file
 connectToDB(); // connection to db
 
 const app = express();
+app.use(cors());
 app.use(express.json()); // Accepting request in JSON format
 
 app.get('/', (request, response) => {
