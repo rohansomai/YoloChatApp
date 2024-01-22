@@ -1,6 +1,7 @@
 const expressAsyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const { generateJwtToken } = require('../helpers/auth.helper');
+const AWS = require('aws-sdk');
 
 const signUpUser = expressAsyncHandler(async (request, response) => {
   const { name, email, password, pic } = request.body;
@@ -25,7 +26,6 @@ const signUpUser = expressAsyncHandler(async (request, response) => {
         _id: newUser._id,
         name: newUser.name,
         email: newUser.email,
-        password: newUser.password,
         pic: newUser.pic,
         token: generateJwtToken({ _id: newUser._id, name: newUser.name, email: newUser.email }),
       });
@@ -56,4 +56,31 @@ const loginUser = expressAsyncHandler(async (request, response) => {
     throw new Error('User not found! Please sign up');
   }
 });
-module.exports = { signUpUser, loginUser };
+
+const uploadProfilePicture = expressAsyncHandler(async (request, response) => {
+  AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+  });
+
+  const s3 = new AWS.S3();
+  const params = {
+    Bucket: process.env.PROFILE_PIC_BUCKET,
+    Key: `yolo-chat-profile-pics/${Date.now()}-${request.file.originalname}`,
+    Body: request.file.buffer,
+    ContentType: request.file.mimetype,
+  };
+
+  s3.upload(params, (err, data) => {
+    if (err) {
+      console.error('Error uploading to S3:', err);
+      return response.status(500).send('Error uploading to S3');
+    }
+
+    const imageUrl = data.Location;
+    response.json({ imageUrl });
+  });
+});
+
+module.exports = { signUpUser, loginUser, uploadProfilePicture };

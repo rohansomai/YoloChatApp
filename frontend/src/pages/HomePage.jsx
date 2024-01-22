@@ -1,11 +1,62 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Box, Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import Login from '../components/Auth/Login';
 import SignUp from '../components/Auth/SignUp';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../shared/hooks/useAuth';
 
 const HomePage = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  // const videoRef = useRef(null);
+
+  const handleCapture = async () => {
+    // try {
+    //   const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    //
+    //   if (videoRef.current) {
+    //     videoRef.current.srcObject = stream;
+    //     videoRef.current.play();
+    //   }
+    //
+    //   // Capture image after a delay (e.g., 2 seconds)
+    //   setTimeout(() => captureImage(stream), 2000);
+    // } catch (error) {
+    //   console.error('Error accessing camera:', error);
+    // }
+  };
+
+  // const captureImage = (stream) => {
+  //   const canvas = document.createElement('canvas');
+  //   const context = canvas.getContext('2d');
+  //
+  //   // Set canvas dimensions to match video stream
+  //   canvas.width = videoRef.current.videoWidth;
+  //   canvas.height = videoRef.current.videoHeight;
+  //
+  //   // Draw current video frame onto the canvas
+  //   context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+  //
+  //   // Convert canvas to base64-encoded image
+  //   const imageData = canvas.toDataURL('image/png');
+  //
+  //   // Stop the video stream
+  //   stream.getTracks().forEach((track) => track.stop());
+  //
+  //   // Now you can send the imageData to the server or use it as needed
+  //   console.log('Captured Image:', imageData);
+  // };
+
+  useEffect(() => {
+    // If the user is already authenticated, redirect them to the /chat page
+    if (isAuthenticated) {
+      navigate('/chats');
+    }
+  }, [isAuthenticated, navigate]);
+
   return (
     <div className={'App'}>
+      {/*<video ref={videoRef} style={{ display: 'none' }} />*/}
       <Container maxW={'xl'} centerContent>
         <Box
           display={'flex'}
@@ -28,10 +79,10 @@ const HomePage = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Login />
+                <Login handleCapture={handleCapture} />
               </TabPanel>
               <TabPanel>
-                <SignUp />
+                <SignUp handleCapture={handleCapture} />
               </TabPanel>
             </TabPanels>
           </Tabs>

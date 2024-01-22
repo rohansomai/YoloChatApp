@@ -9,12 +9,18 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { fieldNameToSentence, validateEmail, validateEmptyString } from '../../utils/string.util';
+import { fieldNameToSentence, validateEmail } from '../../utils/string.util';
+import { signUp } from '../../services/auth.service';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API_BASE_URL } from '../../shared/config';
+import { useAuth } from '../../shared/hooks/useAuth';
 
-const SignUp = () => {
+const SignUp = ({ handleCapture }) => {
   const [input, setInput] = useState({
     name: '',
     email: '',
@@ -29,6 +35,10 @@ const SignUp = () => {
     confirmPassword: '',
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible((prev) => !prev);
@@ -80,8 +90,37 @@ const SignUp = () => {
     return isValid;
   };
 
-  const handleProfilePicUpload = (event) => {
+  const uploadProfilePicApi = (file) => {
+    setLoading(true);
+    const data = new FormData();
+    data.append('file', file);
+    axios
+      .post(`${API_BASE_URL}/upload-profile-pic`, data)
+      .then((response) => {
+        console.log(response);
+        setLoading(false);
+        setInput({ ...input, profilePic: response.data.imageUrl });
+      })
+      .catch((error) => {
+        console.error('Error: ', error);
+        setLoading(false);
+      });
+  };
+
+  const handleProfilePicUpload = async (event) => {
     console.log(event.target.files[0]);
+    if (!event.target.files[0]) {
+      toast({
+        title: 'Please upload a profile picture!',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+    if (event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/png') {
+      uploadProfilePicApi(event.target.files[0]);
+    }
   };
 
   const handleKeyUp = (event) => {
@@ -90,10 +129,39 @@ const SignUp = () => {
     }
   };
 
+  const signUpApi = (body) => {
+    setLoading(true);
+    signUp(body)
+      .then((response) => {
+        setLoading(false);
+        console.log('response: ', response);
+        login(response);
+        toast({
+          title: 'Sign Up Success!',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        navigate('/chats');
+      })
+      .catch((error) => {
+        console.error('Error: ', error);
+        toast({
+          title: 'Something went wrong!',
+          description: error.message || error,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        setLoading(false);
+      });
+  };
+
   const handleSignUp = () => {
     console.log(input);
     if (validate()) {
-      console.log('SUCCESS');
+      handleCapture();
+      signUpApi({ email: input.email, password: input.password, name: input.name, pic: input.profilePic });
     } else {
       console.log('errors: ', errors);
     }
@@ -111,6 +179,7 @@ const SignUp = () => {
             name={'name'}
             isInvalid={Boolean(errors['name'])}
             onKeyUp={handleKeyUp}
+            placeholder={'Enter your name'}
           />
         </FormControl>
         <FormControl isRequired>
@@ -122,6 +191,7 @@ const SignUp = () => {
             name={'email'}
             isInvalid={Boolean(errors['email'])}
             onKeyUp={handleKeyUp}
+            placeholder={'Enter your email'}
           />
         </FormControl>
         <FormControl isRequired>
@@ -134,6 +204,7 @@ const SignUp = () => {
               name={'password'}
               isInvalid={Boolean(errors['password'])}
               onKeyUp={handleKeyUp}
+              placeholder={'Enter your password'}
             />
             <InputRightElement>
               <IconButton
@@ -157,18 +228,12 @@ const SignUp = () => {
             name={'confirmPassword'}
             isInvalid={Boolean(errors['confirmPassword'])}
             onKeyUp={handleKeyUp}
+            placeholder={'Confirm your password'}
           />
         </FormControl>
         <FormControl>
           <FormLabel>Profile Pic</FormLabel>
-          <Input
-            type={'file'}
-            onChange={handleProfilePicUpload}
-            value={input['profilePic']}
-            name={'profilePic'}
-            p={1.5}
-            accept={'image/*'}
-          />
+          <Input type={'file'} onChange={handleProfilePicUpload} name={'profilePic'} p={1.5} accept={'image/*'} />
         </FormControl>
         {Object.values(errors).some((err) => err.length > 0) && (
           <Box backgroundColor={'#f5c6cb'} p={3} marginY={2} borderRadius={'lg'} color={'red.700'} width={'100%'}>
@@ -177,7 +242,7 @@ const SignUp = () => {
             ))}
           </Box>
         )}
-        <Button marginTop={1} colorScheme={'blue'} width={'100%'} onClick={handleSignUp}>
+        <Button marginTop={1} colorScheme={'blue'} width={'100%'} onClick={handleSignUp} isLoading={loading}>
           Sign Up
         </Button>
       </VStack>

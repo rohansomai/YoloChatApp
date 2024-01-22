@@ -16,8 +16,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { fieldNameToSentence } from '../../utils/string.util';
 import { login } from '../../services/auth.service';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../shared/hooks/useAuth';
 
-const Login = () => {
+const Login = ({ handleCapture }) => {
   const [input, setInput] = useState({
     email: '',
     password: '',
@@ -30,6 +31,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
+  const { login: loginUser } = useAuth();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible((prev) => !prev);
@@ -66,6 +68,13 @@ const Login = () => {
       .then((response) => {
         setLoading(false);
         console.log('response: ', response);
+        loginUser(response);
+        toast({
+          title: 'Login Success!',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
         navigate('/chats');
       })
       .catch((error) => {
@@ -84,6 +93,7 @@ const Login = () => {
   const handleLogin = () => {
     console.log(input);
     if (validate()) {
+      handleCapture();
       loginApi({ email: input.email, password: input.password });
     } else {
       console.error('errors: ', errors);
@@ -102,6 +112,7 @@ const Login = () => {
             name={'email'}
             isInvalid={Boolean(errors['email'])}
             onKeyUp={handleKeyUp}
+            placeholder={'Enter your email'}
           />
         </FormControl>
         <FormControl isRequired>
@@ -114,6 +125,7 @@ const Login = () => {
               name={'password'}
               isInvalid={Boolean(errors['password'])}
               onKeyUp={handleKeyUp}
+              placeholder={'Enter your password'}
             />
             <InputRightElement>
               <IconButton

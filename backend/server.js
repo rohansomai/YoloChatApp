@@ -4,9 +4,17 @@ const { connectToDB } = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const { notFound, errorHandler, errorLogger } = require('./middlewares/error.middleware');
 const cors = require('cors');
+const AWS = require('aws-sdk');
 
 dotenv.config(); // To mount the env file
 connectToDB(); // connection to db
+
+// Configure AWS SDK with your credentials and region from .env
+AWS.config.update({
+  accessKeyId: 'AKIA47O6JC5YWT2EMA6S',
+  secretAccessKey: 'WYdbFFB5Lp+GpT4YXAyjCX0O+mJqnl3/uVgPs8QJ',
+  region: 'ap-south-1',
+});
 
 const app = express();
 app.use(cors());
