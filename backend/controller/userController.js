@@ -83,4 +83,19 @@ const uploadProfilePicture = expressAsyncHandler(async (request, response) => {
   });
 });
 
-module.exports = { signUpUser, loginUser, uploadProfilePicture };
+const searchUsers = expressAsyncHandler(async (request, response) => {
+  const query = request.query.keyword
+    ? {
+        $or: [
+          { name: { $regex: request.query.keyword, $options: 'i' } },
+          { email: { $regex: request.query.keyword, $options: 'i' } },
+        ],
+      }
+    : {};
+  console.log(request.user)
+  const users = await User.find(query).find({ _id: { $ne: request.user._id } });
+  console.log(users);
+  response.status(200).json(users);
+});
+
+module.exports = { signUpUser, loginUser, uploadProfilePicture, searchUsers };
