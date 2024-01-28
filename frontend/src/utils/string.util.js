@@ -5,7 +5,6 @@ export function validateEmptyString(string) {
 }
 
 export function validateEmail(email) {
-  console.log("email: ", email);
   return String(email)
     .toLowerCase()
     .match(

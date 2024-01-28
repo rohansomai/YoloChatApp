@@ -67,7 +67,6 @@ const Login = ({ handleCapture }) => {
     login(body)
       .then((response) => {
         setLoading(false);
-        console.log('response: ', response);
         loginUser(response);
         toast({
           title: 'Login Success!',
@@ -91,7 +90,6 @@ const Login = ({ handleCapture }) => {
   };
 
   const handleLogin = () => {
-    console.log(input);
     if (validate()) {
       handleCapture();
       loginApi({ email: input.email, password: input.password });

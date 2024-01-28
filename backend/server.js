@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const { connectToDB } = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 const { notFound, errorHandler, errorLogger } = require('./middlewares/error.middleware');
 const cors = require('cors');
 const AWS = require('aws-sdk');
@@ -25,6 +26,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/api/user', userRoutes);
+app.use('/api/chat', chatRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

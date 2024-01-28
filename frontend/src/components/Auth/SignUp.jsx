@@ -97,7 +97,6 @@ const SignUp = ({ handleCapture }) => {
     axios
       .post(`${API_BASE_URL}/upload-profile-pic`, data)
       .then((response) => {
-        console.log(response);
         setLoading(false);
         setInput({ ...input, profilePic: response.data.imageUrl });
       })
@@ -108,7 +107,6 @@ const SignUp = ({ handleCapture }) => {
   };
 
   const handleProfilePicUpload = async (event) => {
-    console.log(event.target.files[0]);
     if (!event.target.files[0]) {
       toast({
         title: 'Please upload a profile picture!',
@@ -134,7 +132,6 @@ const SignUp = ({ handleCapture }) => {
     signUp(body)
       .then((response) => {
         setLoading(false);
-        console.log('response: ', response);
         login(response);
         toast({
           title: 'Sign Up Success!',
@@ -158,12 +155,11 @@ const SignUp = ({ handleCapture }) => {
   };
 
   const handleSignUp = () => {
-    console.log(input);
     if (validate()) {
       handleCapture();
       signUpApi({ email: input.email, password: input.password, name: input.name, pic: input.profilePic });
     } else {
-      console.log('errors: ', errors);
+      console.error('errors: ', errors);
     }
   };
 

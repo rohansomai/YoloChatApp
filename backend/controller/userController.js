@@ -92,9 +92,7 @@ const searchUsers = expressAsyncHandler(async (request, response) => {
         ],
       }
     : {};
-  console.log(request.user)
   const users = await User.find(query).find({ _id: { $ne: request.user._id } });
-  console.log(users);
   response.status(200).json(users);
 });
 
