@@ -11,9 +11,9 @@ connectToDB(); // connection to db
 
 // Configure AWS SDK with your credentials and region from .env
 AWS.config.update({
-  accessKeyId: 'AKIA47O6JC5YWT2EMA6S',
-  secretAccessKey: 'WYdbFFB5Lp+GpT4YXAyjCX0O+mJqnl3/uVgPs8QJ',
-  region: 'ap-south-1',
+  accessKeyId: 'xxxxxxxx',
+  secretAccessKey: 'xxxxxxxx',
+  region: 'xxxxxxxx',
 });
 
 const app = express();
