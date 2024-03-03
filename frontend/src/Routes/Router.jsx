@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import HomePage from '../../pages/HomePage';
-import ChatPage from '../../pages/ChatPage';
+import HomePage from '../pages/HomePage';
+import ChatPage from '../pages/ChatPage';
 import ProtectedRoute from './ProtectedRoute';
-import NotFound from '../NotFound';
+import NotFound from '../components/NotFound';
 
 const Router = () => {
   return (

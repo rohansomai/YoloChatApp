@@ -28,13 +28,7 @@ const ChatPage = () => {
 
   return (
     <div>
-      Chats:
-      {/*{chats.map(({ chatName }, index) => (*/}
-      {/*  <div key={index}>{chatName}</div>*/}
-      {/*))}*/}
-      <Button position={'absolute'} right={0} top={0} onClick={handleLogout}>
-        Logout
-      </Button>
+
     </div>
   );
 };

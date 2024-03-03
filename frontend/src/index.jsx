@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChakraProvider } from '@chakra-ui/react';
 import './index.css';
-import Router from './components/Routes/Router';
+import Router from './Routes/Router';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './shared/context/AuthProvider';
 

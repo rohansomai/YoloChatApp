@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../shared/hooks/useAuth';
+import { useAuth } from '../shared/hooks/useAuth';
+import Layout from '../components/Layout';
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
@@ -13,9 +14,9 @@ const ProtectedRoute = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <>
+    <Layout>
       <Outlet />
-    </>
+    </Layout>
   );
 };
 
