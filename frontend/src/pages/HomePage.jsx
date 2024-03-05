@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { Box, Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { Box, Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useToast } from '@chakra-ui/react';
 import Login from '../components/Auth/Login';
 import SignUp from '../components/Auth/SignUp';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../shared/hooks/useAuth';
 
-const HomePage = () => {
+const HomePage = ({ sessionExpired }) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   // const videoRef = useRef(null);
+  const toast = useToast();
 
   const handleCapture = async () => {
     // try {
@@ -53,6 +54,17 @@ const HomePage = () => {
       navigate('/chats');
     }
   }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    if (sessionExpired) {
+      toast({
+        title: 'Session Expired! Please Login again',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [sessionExpired]);
 
   return (
     <div className={'App'}>

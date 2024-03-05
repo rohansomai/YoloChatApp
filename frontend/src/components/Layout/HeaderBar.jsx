@@ -38,7 +38,6 @@ const HeaderBar = () => {
               <Text m={1}>No New Notifications</Text>
             </MenuList>
           </Menu>
-          {console.log(user)}
           {isAuthenticated && (
             <Menu>
               <MenuButton

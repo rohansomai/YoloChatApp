@@ -9,6 +9,7 @@ const Router = () => {
   return (
     <Routes>
       <Route path={'/'} element={<HomePage />} />
+      <Route path={'/session-expired'} element={<HomePage sessionExpired />} />
       <Route element={<ProtectedRoute />}>
         <Route path={'/chats'} element={<ChatPage />} />
       </Route>

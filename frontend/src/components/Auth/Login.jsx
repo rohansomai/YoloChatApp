@@ -12,11 +12,12 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { fieldNameToSentence } from '../../utils/string.util';
 import { login } from '../../services/auth.service';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../shared/hooks/useAuth';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const Login = ({ handleCapture }) => {
   const [input, setInput] = useState({
@@ -133,7 +134,7 @@ const Login = ({ handleCapture }) => {
                 background={'#fff'}
                 onClick={togglePasswordVisibility}
               >
-                {passwordVisible ? <Visibility /> : <VisibilityOff />}
+                <FontAwesomeIcon icon={passwordVisible ? faEye : faEyeSlash} />
               </IconButton>
             </InputRightElement>
           </InputGroup>
