@@ -22,9 +22,7 @@ const HeaderBar = () => {
   return (
     <Box height={'60px'} boxShadow={'0 1px 5px 0 rgba(0, 0, 0, 0.19)'}>
       <Flex justifyContent={'space-between'}>
-        <Tooltip label={'Search users to chat'} hasArrow>
-          <SearchUsersDrawer />
-        </Tooltip>
+        <SearchUsersDrawer />
         <Text fontSize={'3xl'} fontFamily={'Work sans'} marginTop={1}>
           Yolo Chat
         </Text>

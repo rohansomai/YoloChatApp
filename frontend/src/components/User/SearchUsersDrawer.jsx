@@ -1,4 +1,6 @@
 import {
+  Avatar,
+  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -11,18 +13,23 @@ import {
   Skeleton,
   Stack,
   Text,
+  Tooltip,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
+import { SearchIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { validateEmptyString } from '../../utils/string.util';
 import { searchUsers } from '../../services/users.service';
+import { times } from 'lodash';
+import UserListItem from './UserListItem';
+import NoUsersFound from './NoUsersFound';
 
 const SearchUsersDrawer = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [usersLoaded, setUsersLoaded] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
@@ -35,6 +42,7 @@ const SearchUsersDrawer = () => {
     searchUsers(searchKeyword)
       .then((response) => {
         setLoading(false);
+        setUsersLoaded(true);
         if (response) {
           setUsers(response);
         }
@@ -42,6 +50,7 @@ const SearchUsersDrawer = () => {
       .catch((error) => {
         console.error('Error: ', error);
         setLoading(false);
+        setUsersLoaded(true);
       });
   };
 
@@ -61,10 +70,12 @@ const SearchUsersDrawer = () => {
 
   return (
     <>
-      <Button marginTop={2} marginLeft={3} variant={'ghost'} onClick={onOpen}>
-        <SearchIcon mr={3} fontWeight={500} />
-        <Text display={{ base: 'none', md: 'flex' }}>Search User</Text>
-      </Button>
+      <Tooltip label={'Search users to chat'} hasArrow>
+        <Button marginTop={2} marginLeft={3} variant={'ghost'} onClick={onOpen}>
+          <SearchIcon mr={3} fontWeight={500} />
+          <Text display={{ base: 'none', md: 'flex' }}>Search User</Text>
+        </Button>
+      </Tooltip>
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
@@ -78,15 +89,18 @@ const SearchUsersDrawer = () => {
                 </Button>
               </Flex>
               <div>
-                {loading ? (
-                  <Stack>
-                    <Skeleton height="20px" />
-                    <Skeleton height="20px" />
-                    <Skeleton height="20px" />
+                {loading && (
+                  <Stack marginTop={2}>
+                    {times(10, (i) => (
+                      <Skeleton key={i} height={55} padding={2} borderRadius={5} />
+                    ))}
                   </Stack>
-                ) : (
-                  users?.map((user) => <div key={user._id}>{user.name}</div>)
                 )}
+                {users.length > 0 ? (
+                  users.map((user) => <UserListItem user={user} key={user._id} />)
+                ) : usersLoaded ? (
+                  <NoUsersFound />
+                ) : null}
               </div>
             </FormControl>
           </DrawerBody>
