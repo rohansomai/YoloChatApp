@@ -1,6 +1,4 @@
 import {
-  Avatar,
-  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -17,21 +15,25 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { SearchIcon, WarningTwoIcon } from '@chakra-ui/icons';
+import { SearchIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { validateEmptyString } from '../../utils/string.util';
 import { searchUsers } from '../../services/users.service';
 import { times } from 'lodash';
 import UserListItem from './UserListItem';
 import NoUsersFound from './NoUsersFound';
+import { accessChat } from '../../services/chats.service';
+import { ChatState } from '../../shared/context/ChatProvider';
 
 const SearchUsersDrawer = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
   const [usersLoaded, setUsersLoaded] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
 
   const handleOnChange = (event) => {
     setSearchKeyword(event.target.value);
@@ -68,6 +70,39 @@ const SearchUsersDrawer = () => {
     }
   };
 
+  const accessChatApi = (userId) => {
+    setChatLoading(true);
+    accessChat({ userId })
+      .then((response) => {
+        setChatLoading(false);
+        if (response) {
+          setSelectedChat(response);
+        } else {
+          console.error('Chat not found', response);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        setChatLoading(false);
+        toast({
+          title: 'Error fetching the Chat',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+  };
+
+  const handleUserSelect = (userId) => {
+    accessChatApi(userId);
+  };
+
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <>
       <Tooltip label={'Search users to chat'} hasArrow>
@@ -83,7 +118,12 @@ const SearchUsersDrawer = () => {
           <DrawerBody>
             <FormControl>
               <Flex>
-                <Input placeholder={'Search by name or email'} value={searchKeyword} onChange={handleOnChange} />
+                <Input
+                  placeholder={'Search by name or email'}
+                  value={searchKeyword}
+                  onChange={handleOnChange}
+                  onKeyUp={handleKeyUp}
+                />
                 <Button marginLeft={2} onClick={handleSearch}>
                   Go
                 </Button>
@@ -97,7 +137,9 @@ const SearchUsersDrawer = () => {
                   </Stack>
                 )}
                 {users.length > 0 ? (
-                  users.map((user) => <UserListItem user={user} key={user._id} />)
+                  users.map((user) => (
+                    <UserListItem user={user} key={user._id} handleUserSelect={() => handleUserSelect(user._id)} />
+                  ))
                 ) : usersLoaded ? (
                   <NoUsersFound />
                 ) : null}

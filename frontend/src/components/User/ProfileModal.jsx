@@ -17,15 +17,14 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon } from '@chakra-ui/icons';
 
-const ProfileModal = ({ children }) => {
-  const { user } = useAuth();
+const ProfileModal = ({ children, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
-        <IconButton icon={<ViewIcon />} onClick={onOpen} aria-label={'Profile'} />
+        <IconButton icon={<ViewIcon />} onClick={onOpen} aria-label={'Profile'} backgroundColor={'#fff'} />
       )}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

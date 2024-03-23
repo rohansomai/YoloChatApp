@@ -16,7 +16,7 @@ import { fieldNameToSentence, validateEmail } from '../../utils/string.util';
 import { signUp } from '../../services/auth.service';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { API_BASE_URL } from '../../shared/config';
+import { USER_API_BASE_URL } from '../../shared/config';
 import { useAuth } from '../../shared/hooks/useAuth';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -96,7 +96,7 @@ const SignUp = ({ handleCapture }) => {
     const data = new FormData();
     data.append('file', file);
     axios
-      .post(`${API_BASE_URL}/upload-profile-pic`, data)
+      .post(`${USER_API_BASE_URL}/upload-profile-pic`, data)
       .then((response) => {
         setLoading(false);
         setInput({ ...input, profilePic: response.data.imageUrl });

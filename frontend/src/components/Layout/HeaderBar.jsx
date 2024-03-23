@@ -20,7 +20,7 @@ import {
 const HeaderBar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   return (
-    <Box height={'60px'} boxShadow={'0 1px 5px 0 rgba(0, 0, 0, 0.19)'}>
+    <Box height={'60px'} boxShadow={'0 1px 5px 0 rgba(0, 0, 0, 0.19)'} background={'#fff'}>
       <Flex justifyContent={'space-between'}>
         <SearchUsersDrawer />
         <Text fontSize={'3xl'} fontFamily={'Work sans'} marginTop={1}>
@@ -50,7 +50,7 @@ const HeaderBar = () => {
                 <Avatar size="sm" cursor={'pointer'} src={user?.pic} loading={'lazy'} name={user.name} />
               </MenuButton>
               <MenuList>
-                <ProfileModal>
+                <ProfileModal user={user}>
                   <MenuItem>My Profile</MenuItem>
                 </ProfileModal>
                 <MenuDivider />

@@ -1,35 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { fetchAllChats } from '../services/chats.service';
-import { useAuth } from '../shared/hooks/useAuth';
-import { Button } from '@chakra-ui/react';
+import React from 'react';
+import { Box } from '@chakra-ui/react';
+import MyChats from '../components/Chats/MyChats';
+import ChatBox from '../components/Chats/ChatBox';
 
 const ChatPage = () => {
-  const [chats, setChats] = useState([]);
-  const { logout } = useAuth();
-
-  // const fetchAllChatsApi = () => {
-  //   fetchAllChats()
-  //     .then((response) => {
-  //       console.log(response);
-  //       setChats(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  const handleLogout = () => {
-    logout();
-  };
-
-  useEffect(() => {
-    // fetchAllChatsApi();
-  }, []);
-
   return (
-    <div>
-
-    </div>
+    <Box display={'flex'} justifyContent={'center'} height={'100%'}>
+      <MyChats />
+      <ChatBox />
+    </Box>
   );
 };
 
