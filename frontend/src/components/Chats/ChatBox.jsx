@@ -10,13 +10,12 @@ const ChatBox = () => {
   console.log('selectedChat: ', selectedChat);
   return (
     <Box
-      display={{ base: 'none', md: 'block' }}
+      display={{ base: selectedChat ? 'block' : 'none', md: 'block' }}
       background={'#fff'}
-      width={'70%'}
+      width={{ md: '70%', base: selectedChat ? '100%' : '70%' }}
       margin={'10px'}
       borderRadius={'10px'}
     >
-      {/*<div>{selectedChat.users[1].name}</div>*/}
       {selectedChat ? (
         <Flex padding={'15px'} height={'100%'} flexDirection={'column'}>
           <Flex
@@ -30,9 +29,9 @@ const ChatBox = () => {
             <ChatBoxHeader />
             <Flex flexDirection={'column'} justifyContent={'flex-end'} height={'100%'}>
               <Flex flexDirection={'column'} justifyContent={'flex-end'} height={'100%'}>
-                <Message message={'Message karo'} />
+                <Message message={'Hey'} />
               </Flex>
-              <Input placeholder={'Message'} background={'#d9edf7'} />
+              <Input placeholder={'Message'} background={'#d9edf7'} _hover={{ borderColor: '#3182ce' }} />
             </Flex>
           </Flex>
         </Flex>

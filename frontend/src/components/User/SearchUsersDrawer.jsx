@@ -20,7 +20,7 @@ import { useState } from 'react';
 import { validateEmptyString } from '../../utils/string.util';
 import { searchUsers } from '../../services/users.service';
 import { times } from 'lodash';
-import UserListItem from './UserListItem';
+import UserListItem from '../../shared/components/UserListItem';
 import NoUsersFound from './NoUsersFound';
 import { accessChat } from '../../services/chats.service';
 import { ChatState } from '../../shared/context/ChatProvider';
