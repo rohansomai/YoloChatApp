@@ -7,7 +7,6 @@ import Message from './Message';
 
 const ChatBox = () => {
   const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
-  console.log('selectedChat: ', selectedChat);
   return (
     <Box
       display={{ base: selectedChat ? 'block' : 'none', md: 'block' }}

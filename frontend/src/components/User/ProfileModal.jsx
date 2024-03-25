@@ -1,8 +1,8 @@
 import React from 'react';
-import { useAuth } from '../../shared/hooks/useAuth';
 import {
+  Avatar,
   Button,
-  IconButton,
+  Flex,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,27 +10,22 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
   Text,
-  Flex,
-  Avatar,
+  useDisclosure,
 } from '@chakra-ui/react';
-import { ViewIcon } from '@chakra-ui/icons';
 
 const ProfileModal = ({ children, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      {children ? (
-        <span onClick={onOpen}>{children}</span>
-      ) : (
-        <IconButton icon={<ViewIcon />} onClick={onOpen} aria-label={'Profile'} backgroundColor={'#fff'} />
-      )}
+      <span onClick={onOpen} style={{ cursor: 'pointer' }}>
+        {children}
+      </span>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Text fontSize={'3xl'} textAlign={'center'}>
+            <Text fontSize={'3xl'} textAlign={'center'} fontFamily={'Work sans'} fontWeight={'bold'}>
               {user.name}
             </Text>
           </ModalHeader>

@@ -9,9 +9,16 @@ export function fetchAllChats() {
 }
 
 export function accessChat(body) {
-  console.log(body);
   return request({
     url: `${CHAT_API_BASE_URL}`,
+    method: 'POST',
+    body: body,
+  });
+}
+
+export function createGroupChat(body) {
+  return request({
+    url: `${CHAT_API_BASE_URL}/group`,
     method: 'POST',
     body: body,
   });

@@ -85,7 +85,7 @@ const SearchUsersDrawer = () => {
         console.error(error);
         setChatLoading(false);
         toast({
-          title: 'Error fetching the Chat',
+          title: 'Error accessing chat',
           status: 'error',
           duration: 5000,
           isClosable: true,

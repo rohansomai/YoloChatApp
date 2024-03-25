@@ -3,9 +3,13 @@ import { Avatar, Flex, IconButton, Text } from '@chakra-ui/react';
 import ProfileModal from '../User/ProfileModal';
 import { ChatState } from '../../shared/context/ChatProvider';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import { getSender } from '../../shared/helpers/chat.helper';
+import { useAuth } from '../../shared/hooks/useAuth';
+import UpdateGroupDetailsModal from './GroupChat/UpdateGroupDetailsModal';
 
 const ChatBoxHeader = () => {
   const { selectedChat, setSelectedChat } = ChatState();
+  const { user } = useAuth();
   const handleBack = () => {
     setSelectedChat(null);
   };
@@ -18,14 +22,44 @@ const ChatBoxHeader = () => {
           onClick={handleBack}
           background={'transparent'}
         >
-          <ArrowBackIcon />
+          <ArrowBackIcon fontSize={'x-large'} />
         </IconButton>
-        <Avatar name={selectedChat.users[1].name} marginX={'10px'} src={selectedChat.users[1]?.pic} />
-        <Text display={'inline-flex'} fontSize={'2xl'} fontFamily={'Work sans'}>
-          {selectedChat.isGroupChat ? selectedChat.chatName : selectedChat.users[1].name}
-        </Text>
+        {selectedChat.isGroupChat ? (
+          <UpdateGroupDetailsModal>
+            <Flex alignItems={'center'}>
+              <Avatar
+                name={'Group'}
+                marginX={'10px'}
+                src={'https://png.pngtree.com/png-vector/20191009/ourmid/pngtree-group-icon-png-image_1796653.jpg'}
+              />
+              <Text display={'inline-flex'} fontSize={'2xl'} fontFamily={'Work sans'}>
+                {selectedChat.chatName}
+              </Text>
+            </Flex>
+          </UpdateGroupDetailsModal>
+        ) : (
+          <ProfileModal user={getSender(user, selectedChat.users)}>
+            <Flex alignItems={'center'}>
+              {selectedChat.isGroupChat ? (
+                <Avatar
+                  name={'Group'}
+                  marginX={'10px'}
+                  src={'https://png.pngtree.com/png-vector/20191009/ourmid/pngtree-group-icon-png-image_1796653.jpg'}
+                />
+              ) : (
+                <Avatar
+                  name={getSender(user, selectedChat.users).name}
+                  marginX={'10px'}
+                  src={getSender(user, selectedChat.users)?.pic}
+                />
+              )}
+              <Text display={'inline-flex'} fontSize={'2xl'} fontFamily={'Work sans'}>
+                {selectedChat.isGroupChat ? selectedChat.chatName : selectedChat.users[1].name}
+              </Text>
+            </Flex>
+          </ProfileModal>
+        )}
       </Flex>
-      <ProfileModal user={selectedChat.users[1]} />
     </Flex>
   );
 };

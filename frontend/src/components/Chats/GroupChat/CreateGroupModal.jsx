@@ -15,12 +15,14 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { searchUsers } from '../../services/users.service';
+import { searchUsers } from '../../../services/users.service';
 import { debounce, isEmpty } from 'lodash';
-import UserListItem from '../../shared/components/UserListItem';
-import { validateEmptyString } from '../../utils/string.util';
-import UserChip from '../../shared/components/UserChip';
-import Loader from '../../shared/components/Loader';
+import UserListItem from '../../../shared/components/UserListItem';
+import { validateEmptyString } from '../../../utils/string.util';
+import UserChip from '../../../shared/components/UserChip';
+import Loader from '../../../shared/components/Loader';
+import { createGroupChat } from '../../../services/chats.service';
+import { ChatState } from '../../../shared/context/ChatProvider';
 
 const CreateGroupModal = ({ children }) => {
   const [groupName, setGroupName] = useState('');
@@ -31,6 +33,7 @@ const CreateGroupModal = ({ children }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { chats, setChats, setSelectedChat } = ChatState();
 
   const searchUsersApi = (searchKeyword) => {
     setLoading(true);
@@ -93,8 +96,31 @@ const CreateGroupModal = ({ children }) => {
     [selectedUsers, groupName]
   );
 
+  const createGroupChatApi = () => {
+    const body = {
+      name: groupName,
+      users: JSON.stringify(selectedUsers.map((user) => user._id)),
+    };
+    createGroupChat(body)
+      .then((response) => {
+        setChats([response, ...chats]);
+        setSelectedChat(response);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          title: 'Error creating group Chat',
+          description: error?.message || undefined,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+  };
+
   const handleCreateGroup = () => {
     handleOnClose();
+    createGroupChatApi();
   };
 
   return (
@@ -104,7 +130,7 @@ const CreateGroupModal = ({ children }) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Text fontSize={'3xl'} textAlign={'center'}>
+            <Text fontSize={'3xl'} textAlign={'center'} fontFamily={'Work sans'} fontWeight={'bold'}>
               Create Group
             </Text>
           </ModalHeader>

@@ -4,14 +4,13 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { accessChat, fetchAllChats } from '../../services/chats.service';
 import ChatListItem from './ChatListItem';
 import { AddIcon } from '@chakra-ui/icons';
-import CreateGroupModal from './CreateGroupModal';
+import CreateGroupModal from './GroupChat/CreateGroupModal';
 
 const MyChats = () => {
   const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
 
   const fetchAllChatsApi = () => {
     fetchAllChats().then((response) => {
-      console.log('response: ', response);
       setChats(response);
     });
   };
@@ -40,10 +39,12 @@ const MyChats = () => {
           My Chats
         </Text>
         <CreateGroupModal>
-          <Button leftIcon={<AddIcon />} background={"#d9edf7ab"}>Create Group</Button>
+          <Button leftIcon={<AddIcon />} background={'#d9edf7ab'}>
+            Create Group
+          </Button>
         </CreateGroupModal>
       </Flex>
-      <Box background={'#f0f0f0'} padding={'10px'} borderRadius={'10px'} height={'calc(100% - 65px)'}>
+      <Box background={'#f0f0f0'} padding={'10px'} borderRadius={'10px'} height={'calc(100% - 65px)'} overflow={'auto'}>
         {chats?.map((chat) => (
           <ChatListItem key={chat._id} chat={chat} />
         ))}
