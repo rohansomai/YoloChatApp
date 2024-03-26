@@ -6,6 +6,8 @@ const chatRoutes = require('./routes/chatRoutes');
 const { notFound, errorHandler, errorLogger } = require('./middlewares/error.middleware');
 const cors = require('cors');
 const AWS = require('aws-sdk');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger_output.json');
 
 dotenv.config(); // To mount the env file
 connectToDB(); // connection to db
@@ -27,6 +29,7 @@ app.get('/', (request, response) => {
 
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(notFound);
 app.use(errorHandler);
