@@ -61,7 +61,7 @@ const CreateGroupModal = ({ children }) => {
         status: 'warning',
         duration: 2000,
         isClosable: true,
-        position: 'top-left',
+        position: 'bottom',
       });
     }
   };

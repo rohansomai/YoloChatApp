@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react';
+import { cloneDeep } from 'lodash';
 
 const ChatContext = createContext();
 
@@ -14,9 +15,16 @@ const ChatProvider = ({ children }) => {
     setChats(value);
   };
 
+  const updateChat = (updatedChatObj) => {
+    const chatsClone = cloneDeep(chats);
+    const selectedChatIndex = chats.findIndex((chat) => chat._id === updatedChatObj._id);
+    chatsClone[selectedChatIndex] = updatedChatObj;
+    setChats([...chatsClone]);
+  };
+
   return (
     <ChatContext.Provider
-      value={{ selectedChat, setSelectedChat: handleSetSelectedChat, chats, setChats: handleSetChats }}
+      value={{ selectedChat, setSelectedChat: handleSetSelectedChat, chats, setChats: handleSetChats, updateChat }}
     >
       {children}
     </ChatContext.Provider>

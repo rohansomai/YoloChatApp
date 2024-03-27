@@ -23,3 +23,27 @@ export function createGroupChat(body) {
     body: body,
   });
 }
+
+export function renameGroupName(body) {
+  return request({
+    url: `${CHAT_API_BASE_URL}/group/rename`,
+    method: 'PUT',
+    body: body,
+  });
+}
+
+export function addUserToGroup(body) {
+  return request({
+    url: `${CHAT_API_BASE_URL}/group/add-user`,
+    method: 'PUT',
+    body: body,
+  });
+}
+
+export function removeUserFromGroup(body) {
+  return request({
+    url: `${CHAT_API_BASE_URL}/group/remove-user`,
+    method: 'PUT',
+    body: body,
+  });
+}
