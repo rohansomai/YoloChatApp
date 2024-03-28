@@ -7,7 +7,7 @@ const {
   renameGroup,
   addToGroup,
   removeFromGroup,
-} = require('../controller/chatController');
+} = require('../controller/chat.controller');
 
 const router = express.Router();
 

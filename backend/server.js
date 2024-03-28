@@ -1,8 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const { connectToDB } = require('./config/db');
-const userRoutes = require('./routes/userRoutes');
-const chatRoutes = require('./routes/chatRoutes');
+const userRoutes = require('./routes/user.routes');
+const chatRoutes = require('./routes/chat.routes');
+const messageRoutes = require('./routes/message.routes');
 const { notFound, errorHandler, errorLogger } = require('./middlewares/error.middleware');
 const cors = require('cors');
 const AWS = require('aws-sdk');
@@ -29,6 +30,7 @@ app.get('/', (request, response) => {
 
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/message', messageRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(notFound);

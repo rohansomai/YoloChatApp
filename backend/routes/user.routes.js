@@ -1,5 +1,5 @@
 const express = require('express');
-const { signUpUser, loginUser, uploadProfilePicture, searchUsers } = require('../controller/userController');
+const { signUpUser, loginUser, uploadProfilePicture, searchUsers } = require('../controller/user.controller');
 const multer = require('multer');
 const { protect } = require('../middlewares/auth.middleware');
 

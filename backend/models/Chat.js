@@ -10,7 +10,10 @@ const chatSchema = mongoose.Schema(
         ref: 'User',
       },
     ],
-    latestMessage: { type: String },
+    latestMessage: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
+    },
     groupAdmin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {

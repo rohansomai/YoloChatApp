@@ -26,7 +26,6 @@ const accessChat = expressAsyncHandler(async (req, res) => {
       chatName: 'sender',
       isGroupChat: false,
       users: [req.user._id, userId],
-      latestMessage: 'HELLO :)',
     };
     try {
       const createdChat = await Chat.create(newChatBody);
