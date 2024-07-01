@@ -1,18 +1,31 @@
 import React, { useEffect } from 'react';
 import { ChatState } from '../../shared/context/ChatProvider';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import { accessChat, fetchAllChats } from '../../services/chats.service';
+import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
+import { fetchAllChats } from '../../services/chats.service';
 import ChatListItem from './ChatListItem';
 import { AddIcon } from '@chakra-ui/icons';
 import CreateGroupModal from './GroupChat/CreateGroupModal';
 
 const MyChats = () => {
   const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
+  const toast = useToast();
 
   const fetchAllChatsApi = () => {
-    fetchAllChats().then((response) => {
-      setChats(response);
-    });
+    fetchAllChats()
+      .then((response) => {
+        setChats(response);
+      })
+      .catch((error) => {
+        console.error('Error: ', error);
+        toast({
+          title: 'Something went wrong while fetching chats',
+          status: 'error',
+          description: error?.message || undefined,
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom',
+        });
+      });
   };
 
   useEffect(() => {
@@ -45,9 +58,7 @@ const MyChats = () => {
         </CreateGroupModal>
       </Flex>
       <Box background={'#f0f0f0'} padding={'10px'} borderRadius={'10px'} height={'calc(100% - 65px)'} overflow={'auto'}>
-        {chats?.map((chat) => (
-          <ChatListItem key={chat._id} chat={chat} />
-        ))}
+        {chats && chats.length > 0 && chats?.map((chat) => <ChatListItem key={chat._id} chat={chat} />)}
       </Box>
     </Box>
   );

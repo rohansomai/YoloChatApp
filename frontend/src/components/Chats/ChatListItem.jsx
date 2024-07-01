@@ -24,7 +24,7 @@ const ChatListItem = ({ chat }) => {
       borderRadius={'10px'}
       display={'flex'}
     >
-      {chat.isGroupChat ? (
+      {chat?.isGroupChat ? (
         <Avatar
           name={'Group'}
           marginX={'10px'}
@@ -35,7 +35,7 @@ const ChatListItem = ({ chat }) => {
       )}
       <div>
         <Text display={'inline-flex'}>{chat.isGroupChat ? chat.chatName : getSender(user, chat.users).name}</Text>
-        <Text fontSize={'xs'}>{chat.latestMessage}</Text>
+        <Text fontSize={'xs'}>{chat?.latestMessage?.content}</Text>
       </div>
     </Box>
   );

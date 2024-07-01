@@ -7,12 +7,13 @@ import { getSender } from '../../shared/helpers/chat.helper';
 import { useAuth } from '../../shared/hooks/useAuth';
 import UpdateGroupDetailsModal from './GroupChat/UpdateGroupDetailsModal';
 
-const ChatBoxHeader = () => {
+const ChatBoxHeader = ({ updateMessages }) => {
   const { selectedChat, setSelectedChat } = ChatState();
   const { user } = useAuth();
   const handleBack = () => {
     setSelectedChat(null);
   };
+
   return (
     <Flex justifyContent={'space-between'}>
       <Flex alignItems={'center'}>
@@ -25,7 +26,7 @@ const ChatBoxHeader = () => {
           <ArrowBackIcon fontSize={'x-large'} />
         </IconButton>
         {selectedChat.isGroupChat ? (
-          <UpdateGroupDetailsModal>
+          <UpdateGroupDetailsModal updateMessages={updateMessages}>
             <Flex alignItems={'center'}>
               <Avatar
                 name={'Group'}

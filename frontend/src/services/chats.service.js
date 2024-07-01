@@ -1,5 +1,5 @@
 import { request } from '../shared/axios.interceptor';
-import { CHAT_API_BASE_URL } from '../shared/config';
+import { CHAT_API_BASE_URL, MESSAGE_API_BASE_URL } from '../shared/config';
 
 export function fetchAllChats() {
   return request({
@@ -44,6 +44,21 @@ export function removeUserFromGroup(body) {
   return request({
     url: `${CHAT_API_BASE_URL}/group/remove-user`,
     method: 'PUT',
+    body: body,
+  });
+}
+
+export function fetchMessages(chatId) {
+  return request({
+    url: `${MESSAGE_API_BASE_URL}/${chatId}`,
+    method: 'GET',
+  });
+}
+
+export function sendMessage(body) {
+  return request({
+    url: `${MESSAGE_API_BASE_URL}`,
+    method: 'POST',
     body: body,
   });
 }

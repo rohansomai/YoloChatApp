@@ -28,7 +28,7 @@ import { addUserToGroup, removeUserFromGroup, renameGroupName } from '../../../s
 import { useAuth } from '../../../shared/hooks/useAuth';
 import ConfirmationModal from '../../../shared/components/ConfirmationModal';
 
-const UpdateGroupDetailsModal = ({ children }) => {
+const UpdateGroupDetailsModal = ({ children, updateMessages }) => {
   const [groupName, setGroupName] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [users, setUsers] = useState([]);
@@ -73,6 +73,7 @@ const UpdateGroupDetailsModal = ({ children }) => {
           duration: 5000,
           isClosable: true,
         });
+        updateMessages();
       })
       .catch((error) => {
         console.error('Error: ', error);
@@ -121,6 +122,7 @@ const UpdateGroupDetailsModal = ({ children }) => {
           duration: 5000,
           isClosable: true,
         });
+        updateMessages();
       } else {
         toast({
           title: `You left ${selectedChat.chatName} group`,
@@ -167,6 +169,7 @@ const UpdateGroupDetailsModal = ({ children }) => {
         duration: 5000,
         isClosable: true,
       });
+      updateMessages();
     } catch (error) {
       console.error('Error renaming group: ', error);
       toast({
